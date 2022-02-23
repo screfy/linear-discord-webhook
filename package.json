@@ -1,0 +1,16 @@
+{
+  "name": "linear-discord-webhook",
+  "version": "0.0.0",
+  "author": "screfy <me@screfy.com> (https://screfy.com)",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write .",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.18",
+    "@vercel/node": "^1.13.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.5"
+  }
+}

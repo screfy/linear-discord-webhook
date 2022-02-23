@@ -1,0 +1,7 @@
+node_modules
+.DS_Store
+.vercel
+.output
+
+.pnpm-debug.log*
+*.tsbuildinfo
