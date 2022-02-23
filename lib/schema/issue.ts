@@ -5,6 +5,7 @@ const COMMONS = z.object({
   id: z.string().uuid(),
   title: z.string(),
   description: z.string().optional(),
+  teamId: z.string().uuid(),
   creatorId: z.string().uuid(),
   assignee: z
     .object({
@@ -12,7 +13,8 @@ const COMMONS = z.object({
     })
     .optional(),
   state: z.object({
-    name: z.string()
+    name: z.string(),
+    color: z.string()
   }),
   team: z.object({
     name: z.string(),

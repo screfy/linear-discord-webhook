@@ -19,5 +19,9 @@ export function createModelSchema<T extends Model, C extends AnyZodObject>(
   type: T,
   commons: C
 ) {
-  return z.object({ type: z.literal(type), data: commons });
+  return z.object({
+    type: z.literal(type),
+    data: commons,
+    updatedFrom: z.object({ stateId: z.string().uuid().optional() }).optional()
+  });
 }

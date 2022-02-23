@@ -63,13 +63,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const creator = await linear.user(result.data.creatorId);
           const identifier = parseIdentifier(result.url);
 
-          content = `${bold(creator.name)} added a new issue`;
+          content = `${bold(creator.displayName)} added a new issue`;
 
           embed
             .setTitle(`${identifier} ${result.data.title}`)
             .setURL(result.url)
             .setAuthor({
-              name: creator.displayName,
+              name: creator.name,
               url: creator.url,
               iconURL: creator.avatarUrl
             })
@@ -97,6 +97,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           if (result.data.description) {
             embed.setDescription(result.data.description);
           }
+        } else if (
+          result.action === Action.UPDATE &&
+          result.updatedFrom?.stateId
+        ) {
+          const creator = await linear.user(result.data.creatorId);
+          const identifier = parseIdentifier(result.url);
+
+          embed
+            .setColor(result.data.state.color as HexColorString)
+            .setTimestamp(result.createdAt)
+            .setDescription(
+              `${bold(creator.name)} changed status to ${bold(
+                result.data.state.name
+              )} for ${hyperlink(
+                `${identifier} ${result.data.title}`,
+                result.url
+              )}`
+            );
         }
       }
     }
