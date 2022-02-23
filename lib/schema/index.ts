@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { COMMENT_SCHEMA } from './comment';
 import { ISSUE_SCHEMA } from './issue';
 import { Action, DATE_RESOLVABLE } from './utils';
 
@@ -8,4 +9,4 @@ const COMMONS = z.object({
   url: z.string().url()
 });
 
-export const SCHEMA = COMMONS.and(ISSUE_SCHEMA);
+export const SCHEMA = COMMONS.and(ISSUE_SCHEMA.or(COMMENT_SCHEMA));

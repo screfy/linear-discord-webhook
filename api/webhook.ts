@@ -116,6 +116,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               )}`
             );
         }
+
+        break;
+      }
+      case Model.COMMENT: {
+        if (result.action === Action.CREATE) {
+          const identifier = parseIdentifier(result.url);
+
+          content = `${bold(result.data.user.name)} commented on ${hyperlink(
+            `${identifier} ${result.data.issue.title}`,
+            result.url
+          )}`;
+
+          embed.setTimestamp(result.createdAt).setDescription(result.data.body);
+        }
+
+        break;
       }
     }
 
