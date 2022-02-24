@@ -11,6 +11,7 @@ import { Action, Model } from '../lib/schema/utils';
 const DISCORD_WEBHOOKS_URL = 'https://discord.com/api/webhooks';
 
 const WEBHOOK_USERNAME = 'Linear';
+const WEBHOOK_AVATAR_URL = 'https://ldw.screfy.com/static/linear.png';
 
 const LINEAR_BASE_URL = 'https://linear.app';
 const LINEAR_COLOR: HexColorString = '#5E6AD2';
@@ -145,6 +146,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         username: WEBHOOK_USERNAME,
+        avatar_url: WEBHOOK_AVATAR_URL,
         embeds: [embed.toJSON()]
       })
     });
