@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="url" content="https://ldw.screfy.com" />
+    <meta
+      name="description"
+      content="Receive Linear updates directly in your Discord channels."
+    />
+    <link rel="canonical" href="https://ldw.screfy.com" />
+    <title>Linear Discord Webhook</title>
+    <style>
+      body {
+        margin: 3rem 4rem;
+        background: #161616;
+        color: #a0a0a0;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', sans-serif;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+      }
+
+      h1,
+      h2 {
+        color: #ededed;
+      }
+
+      h1 {
+        line-height: 2rem;
+      }
+
+      ol {
+        padding-inline-start: 1.75rem;
+      }
+
+      a {
+        color: #ededed;
+        text-decoration: none;
+        font-weight: 500;
+        transition-property: color;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+      }
+
+      a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+
+      strong {
+        color: #d3d3d3;
+        font-weight: 500;
+      }
+
+      form {
+        width: 50%;
+      }
+
+      label {
+        display: flex;
+        flex-direction: column;
+        color: #ededed;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+      }
+
+      label span {
+        margin-bottom: 0.125rem;
+      }
+
+      input {
+        border: 1px solid #3e3e3e;
+        border-radius: 0.25rem;
+        background-color: #161616;
+        color: #ededed;
+        padding: 0.375rem 0.625rem;
+        transition-property: border-color;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+      }
+
+      input:focus {
+        border: 1px solid #6166e3;
+        outline: none;
+      }
+
+      button {
+        border: none;
+        border-radius: 0.25rem;
+        background-color: #3e42af;
+        color: #ededed;
+        width: 100%;
+        padding: 0.44rem 0;
+        font-weight: 500;
+        transition-property: background-color;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+      }
+
+      button:hover {
+        background-color: #5054d9;
+        cursor: pointer;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          margin: 2rem 2rem;
+        }
+
+        form {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Linear Discord Webhook</h1>
+
+    <div>
+      <h2>Instructions</h2>
+      <ol>
+        <li>
+          Create a
+          <a
+            href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
+            target="_blank"
+            >Discord Webhook</a
+          >
+          and paste it here in the <strong>Discord webhook URL</strong> input.
+        </li>
+        <li>
+          Create a
+          <a
+            href="https://linear.app/docs/api-and-webhooks#overview"
+            target="_blank"
+            >Linear API token</a
+          >
+          and paste it here in the <strong>Linear API token</strong> input.
+        </li>
+        <li>
+          Click the <strong>Copy webhook URL</strong> button to generate and
+          copy your webhook URL.
+        </li>
+        <li>
+          Create a
+          <a
+            href="https://linear.app/docs/api-and-webhooks#overview"
+            target="_blank"
+            >Linear Webhook</a
+          >
+          and paste there your copied webhook URL.
+        </li>
+      </ol>
+    </div>
+
+    <form id="form">
+      <label for="webhookUrl">
+        <span>Discord webhook URL</span>
+        <input
+          type="url"
+          id="webhookUrl"
+          placeholder="https://discord.com/api/webhooks/123/abc"
+          required
+        />
+      </label>
+      <label for="linearToken">
+        <span>Linear API token</span>
+        <input
+          type="text"
+          id="linearToken"
+          placeholder="lin_api_abcdefgh"
+          required
+        />
+      </label>
+      <button type="submit" id="copy">Copy webhook URL</button>
+    </form>
+
+    <script>
+      const API_ENDPOINT_URL = 'https://ldw.screfy.com/api/webhook';
+      const DISCORD_WEBHOOK_EXPRESSION =
+        /https:\/\/discord\.com\/api\/webhooks\/([\d]+)\/([\w+.-]+)/i;
+
+      const form = document.getElementById('form');
+      const webhookUrlInput = document.getElementById('webhookUrl');
+      const linearTokenInput = document.getElementById('linearToken');
+      const copy = document.getElementById('copy');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const webhookUrl = webhookUrlInput.value;
+        const linearToken = linearTokenInput.value;
+        const match = webhookUrl.match(DISCORD_WEBHOOK_EXPRESSION);
+
+        if (!match) {
+          result.innerText = 'Invalid Webhook URL';
+
+          return;
+        }
+
+        const [, webhookId, webhookToken] = match;
+        const url = new URL(API_ENDPOINT_URL);
+
+        url.searchParams.set('webhookId', webhookId);
+        url.searchParams.set('webhookToken', webhookToken);
+        url.searchParams.set('linearToken', linearToken);
+
+        navigator.clipboard.writeText(url.toString());
+
+        copy.innerText = 'Copied to clipboard';
+
+        setTimeout(() => {
+          copy.innerText = 'Copy webhook URL';
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>
