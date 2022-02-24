@@ -48,37 +48,49 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { webhookId, webhookToken, linearToken } = QUERY_SCHEMA.parse(
       req.query
     );
+    const result = SCHEMA.safeParse(req.body);
 
-    const result = SCHEMA.parse(req.body);
-    const embed = new MessageEmbed({ color: LINEAR_COLOR });
+    // Prevent Linear repeating requests for not supported resources:
+    if (!result.success) {
+      return res.send({
+        success: true,
+        message: 'Event skipped.',
+        error: null
+      });
+    }
+
+    const body = result.data;
+    const embed = new MessageEmbed({
+      color: LINEAR_COLOR,
+      timestamp: body.createdAt
+    });
     const linear = new LinearClient({ apiKey: linearToken });
 
-    switch (result.type) {
+    switch (body.type) {
       case Model.ISSUE: {
-        if (result.action === Action.CREATE) {
-          const creator = await linear.user(result.data.creatorId);
-          const identifier = parseIdentifier(result.url);
+        if (body.action === Action.CREATE) {
+          const creator = await linear.user(body.data.creatorId);
+          const identifier = parseIdentifier(body.url);
 
           embed
-            .setTitle(`${identifier} ${result.data.title}`)
-            .setURL(result.url)
+            .setTitle(`${identifier} ${body.data.title}`)
+            .setURL(body.url)
             .setAuthor({
               name: 'New issue added'
             })
             .setFooter({ text: creator.name, iconURL: creator.avatarUrl })
-            .setTimestamp(result.createdAt)
             .addField(
               'Team',
               hyperlink(
-                result.data.team.name,
-                `${LINEAR_BASE_URL}/team/${result.data.team.key}`
+                body.data.team.name,
+                `${LINEAR_BASE_URL}/team/${body.data.team.key}`
               ),
               true
             )
-            .addField('Status', result.data.state.name, true);
+            .addField('Status', body.data.state.name, true);
 
-          if (result.data.assignee) {
-            const assignee = await linear.user(result.data.assignee.id);
+          if (body.data.assignee) {
+            const assignee = await linear.user(body.data.assignee.id);
 
             embed.addField(
               'Assignee',
@@ -87,44 +99,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             );
           }
 
-          if (result.data.description) {
-            embed.setDescription(result.data.description);
+          if (body.data.description) {
+            embed.setDescription(body.data.description);
           }
-        } else if (
-          result.action === Action.UPDATE &&
-          result.updatedFrom?.stateId
-        ) {
-          const creator = await linear.user(result.data.creatorId);
-          const identifier = parseIdentifier(result.url);
+        } else if (body.action === Action.UPDATE && body.updatedFrom?.stateId) {
+          const creator = await linear.user(body.data.creatorId);
+          const identifier = parseIdentifier(body.url);
 
           embed
-            .setTitle(`${identifier} ${result.data.title}`)
-            .setURL(result.url)
+            .setTitle(`${identifier} ${body.data.title}`)
+            .setURL(body.url)
             .setAuthor({
               name: 'Status changed'
             })
-            .setColor(result.data.state.color as HexColorString)
+            .setColor(body.data.state.color as HexColorString)
             .setFooter({ text: creator.name, iconURL: creator.avatarUrl })
-            .setTimestamp(result.createdAt)
-            .setDescription(`Status: ${bold(result.data.state.name)}`);
+            .setDescription(`Status: ${bold(body.data.state.name)}`);
         }
 
         break;
       }
       case Model.COMMENT: {
-        if (result.action === Action.CREATE) {
-          const user = await linear.user(result.data.userId);
-          const identifier = parseIdentifier(result.url);
+        if (body.action === Action.CREATE) {
+          const user = await linear.user(body.data.userId);
+          const identifier = parseIdentifier(body.url);
 
           embed
-            .setTitle(`${identifier} ${result.data.issue.title}`)
-            .setURL(result.url)
+            .setTitle(`${identifier} ${body.data.issue.title}`)
+            .setURL(body.url)
             .setAuthor({
               name: 'New comment'
             })
-            .setTimestamp(result.createdAt)
             .setFooter({ text: user.name, iconURL: user.avatarUrl })
-            .setDescription(result.data.body);
+            .setDescription(body.data.body);
         }
 
         break;
