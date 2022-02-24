@@ -19,7 +19,7 @@
   "dependencies": {
     "@linear/sdk": "^1.22.0",
     "discord.js": "12.5.3",
-    "node-fetch": "2.6.6",
+    "node-fetch": ">=2.6.7",
     "zod": "^3.11.6"
   }
 }

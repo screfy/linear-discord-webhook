@@ -6,7 +6,7 @@ specifiers:
   '@types/node-fetch': ^2.6.1
   '@vercel/node': ^1.13.0
   discord.js: 12.5.3
-  node-fetch: 2.6.6
+  node-fetch: '>=2.6.7'
   prettier: ^2.5.1
   typescript: ^4.5.5
   zod: ^3.11.6
@@ -14,7 +14,7 @@ specifiers:
 dependencies:
   '@linear/sdk': 1.22.0
   discord.js: 12.5.3
-  node-fetch: 2.6.6
+  node-fetch: 2.6.7
   zod: 3.11.6
 
 devDependencies:
@@ -174,13 +174,6 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.51.0
-
-  /node-fetch/2.6.6:
-    resolution: {integrity: sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==}
-    engines: {node: 4.x || >=6.0.0}
-    dependencies:
-      whatwg-url: 5.0.0
-    dev: false
 
   /node-fetch/2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
