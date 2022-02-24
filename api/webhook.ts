@@ -1,7 +1,6 @@
-import { bold, hyperlink, quote } from '@discordjs/builders';
 import { LinearClient } from '@linear/sdk';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { HexColorString, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import { z, ZodError, ZodIssue } from 'zod';
 import { HttpError } from '../lib/HttpError';
@@ -14,7 +13,7 @@ const WEBHOOK_USERNAME = 'Linear';
 const WEBHOOK_AVATAR_URL = 'https://ldw.screfy.com/static/linear.png';
 
 const LINEAR_BASE_URL = 'https://linear.app';
-const LINEAR_COLOR: HexColorString = '#5E6AD2';
+const LINEAR_COLOR = '#5E6AD2';
 const LINEAR_TRUSTED_IPS = z.enum(['35.231.147.226', '35.243.134.228']);
 
 const QUERY_SCHEMA = z.object({
@@ -72,22 +71,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (body.action === Action.CREATE) {
           const creator = await linear.user(body.data.creatorId);
           const identifier = parseIdentifier(body.url);
+          const teamUrl = `${LINEAR_BASE_URL}/team/${body.data.team.key}`;
 
           embed
             .setTitle(`${identifier} ${body.data.title}`)
             .setURL(body.url)
-            .setAuthor({
-              name: 'New issue added'
-            })
-            .setFooter({ text: creator.name, iconURL: creator.avatarUrl })
-            .addField(
-              'Team',
-              hyperlink(
-                body.data.team.name,
-                `${LINEAR_BASE_URL}/team/${body.data.team.key}`
-              ),
-              true
-            )
+            .setAuthor('New issue added')
+            .setFooter(creator.name, creator.avatarUrl)
+            .addField('Team', `[${body.data.team.name}](${teamUrl})`, true)
             .addField('Status', body.data.state.name, true);
 
           if (body.data.assignee) {
@@ -95,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
             embed.addField(
               'Assignee',
-              hyperlink(assignee.displayName, assignee.url),
+              `[${assignee.displayName}](${assignee.url})`,
               true
             );
           }
@@ -110,12 +101,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           embed
             .setTitle(`${identifier} ${body.data.title}`)
             .setURL(body.url)
-            .setAuthor({
-              name: 'Status changed'
-            })
-            .setColor(body.data.state.color as HexColorString)
-            .setFooter({ text: creator.name, iconURL: creator.avatarUrl })
-            .setDescription(`Status: ${bold(body.data.state.name)}`);
+            .setAuthor('Status changed')
+            .setColor(body.data.state.color)
+            .setFooter(creator.name, creator.avatarUrl)
+            .setDescription(`Status: **${body.data.state.name}**`);
         }
 
         break;
@@ -128,10 +117,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           embed
             .setTitle(`${identifier} ${body.data.issue.title}`)
             .setURL(body.url)
-            .setAuthor({
-              name: 'New comment'
-            })
-            .setFooter({ text: user.name, iconURL: user.avatarUrl })
+            .setAuthor('New comment')
+            .setFooter(user.name, user.avatarUrl)
             .setDescription(body.data.body);
         }
 
