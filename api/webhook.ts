@@ -1,4 +1,4 @@
-import { bold, hyperlink } from '@discordjs/builders';
+import { bold, hyperlink, quote } from '@discordjs/builders';
 import { LinearClient } from '@linear/sdk';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { HexColorString, MessageEmbed } from 'discord.js';
@@ -49,13 +49,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       req.query
     );
 
-    console.log(req.body);
-
     const result = SCHEMA.parse(req.body);
     const embed = new MessageEmbed({ color: LINEAR_COLOR });
     const linear = new LinearClient({ apiKey: linearToken });
-
-    let content;
 
     switch (result.type) {
       case Model.ISSUE: {
@@ -63,16 +59,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const creator = await linear.user(result.data.creatorId);
           const identifier = parseIdentifier(result.url);
 
-          content = `${bold(creator.displayName)} added a new issue`;
-
           embed
             .setTitle(`${identifier} ${result.data.title}`)
             .setURL(result.url)
             .setAuthor({
-              name: creator.name,
-              url: creator.url,
-              iconURL: creator.avatarUrl
+              name: 'New issue added'
             })
+            .setFooter({ text: creator.name, iconURL: creator.avatarUrl })
             .setTimestamp(result.createdAt)
             .addField(
               'Team',
@@ -105,30 +98,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const identifier = parseIdentifier(result.url);
 
           embed
+            .setTitle(`${identifier} ${result.data.title}`)
+            .setURL(result.url)
+            .setAuthor({
+              name: 'Status changed'
+            })
             .setColor(result.data.state.color as HexColorString)
+            .setFooter({ text: creator.name, iconURL: creator.avatarUrl })
             .setTimestamp(result.createdAt)
-            .setDescription(
-              `${bold(creator.name)} changed status to ${bold(
-                result.data.state.name
-              )} for ${hyperlink(
-                `${identifier} ${result.data.title}`,
-                result.url
-              )}`
-            );
+            .setDescription(`Status: ${bold(result.data.state.name)}`);
         }
 
         break;
       }
       case Model.COMMENT: {
         if (result.action === Action.CREATE) {
+          const user = await linear.user(result.data.userId);
           const identifier = parseIdentifier(result.url);
 
-          content = `${bold(result.data.user.name)} commented on ${hyperlink(
-            `${identifier} ${result.data.issue.title}`,
-            result.url
-          )}`;
-
-          embed.setTimestamp(result.createdAt).setDescription(result.data.body);
+          embed
+            .setTitle(`${identifier} ${result.data.issue.title}`)
+            .setURL(result.url)
+            .setAuthor({
+              name: 'New comment'
+            })
+            .setTimestamp(result.createdAt)
+            .setFooter({ text: user.name, iconURL: user.avatarUrl })
+            .setDescription(result.data.body);
         }
 
         break;
@@ -142,7 +138,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         username: WEBHOOK_USERNAME,
-        content,
         embeds: [embed.toJSON()]
       })
     });
@@ -159,8 +154,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       error = e.issues;
       statusCode = 400;
     }
-
-    console.log('ERROR: ', e);
 
     res.status(statusCode).send({ success: false, message: null, error });
   }
