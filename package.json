@@ -1,6 +1,7 @@
 {
   "name": "linear-discord-webhook",
   "description": "Receive Linear updates directly in your Discord channels.",
+  "license": "MIT",
   "version": "0.0.0",
   "author": "screfy <me@screfy.com> (https://screfy.com)",
   "private": true,
