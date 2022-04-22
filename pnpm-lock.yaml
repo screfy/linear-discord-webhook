@@ -2,27 +2,27 @@ lockfileVersion: 5.3
 
 specifiers:
   '@linear/sdk': ^1.22.0
-  '@types/node': ^17.0.18
+  '@types/node': ^17.0.25
   '@types/node-fetch': ^2.6.1
-  '@vercel/node': ^1.13.0
+  '@vercel/node': ^1.14.1
   discord.js: 12.5.3
   node-fetch: '>=2.6.7'
-  prettier: ^2.5.1
-  typescript: ^4.5.5
-  zod: ^3.11.6
+  prettier: ^2.6.2
+  typescript: ^4.6.3
+  zod: ^3.14.4
 
 dependencies:
   '@linear/sdk': 1.22.0
   discord.js: 12.5.3
   node-fetch: 2.6.7
-  zod: 3.11.6
+  zod: 3.14.4
 
 devDependencies:
-  '@types/node': 17.0.19
+  '@types/node': 17.0.25
   '@types/node-fetch': 2.6.1
-  '@vercel/node': 1.13.0
-  prettier: 2.5.1
-  typescript: 4.5.5
+  '@vercel/node': 1.14.1
+  prettier: 2.6.2
+  typescript: 4.6.3
 
 packages:
 
@@ -61,18 +61,23 @@ packages:
   /@types/node-fetch/2.6.1:
     resolution: {integrity: sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==}
     dependencies:
-      '@types/node': 17.0.19
+      '@types/node': 17.0.25
       form-data: 3.0.1
     dev: true
 
-  /@types/node/17.0.19:
-    resolution: {integrity: sha512-PfeQhvcMR4cPFVuYfBN4ifG7p9c+Dlh3yUZR6k+5yQK7wX3gDgVxBly4/WkBRs9x4dmcy1TVl08SY67wwtEvmA==}
+  /@types/node/17.0.25:
+    resolution: {integrity: sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==}
     dev: true
 
-  /@vercel/node/1.13.0:
-    resolution: {integrity: sha512-AqdUuJC0+r3q1lcL+Knjb+dHsSDSCRfwFPJ7odRkHO7sfoAkhJI4RussIDFTF7Yvt0e+GmWuYGFAgwSiv4FWEg==}
+  /@vercel/node-bridge/2.2.0:
+    resolution: {integrity: sha512-ydYlZyIQfsuriF6qTt/F4vaAt+nb4ZKhLEl2o5AQFa5ED7LoPS5w01Xbujy+25pqS1ODu8/bsqOCUSX8y/+tSQ==}
+    dev: true
+
+  /@vercel/node/1.14.1:
+    resolution: {integrity: sha512-/R1tERotQMTBoB4gw390B8wJAOS9IO4iejing9jqLFSISdW7uVU6kgkUbLM8OtuN0DGwi1qYQ6DcdxySX2qYzw==}
     dependencies:
-      '@types/node': 17.0.19
+      '@types/node': 17.0.25
+      '@vercel/node-bridge': 2.2.0
       ts-node: 8.9.1_typescript@4.3.4
       typescript: 4.3.4
     dev: true
@@ -187,8 +192,8 @@ packages:
       whatwg-url: 5.0.0
     dev: false
 
-  /prettier/2.5.1:
-    resolution: {integrity: sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==}
+  /prettier/2.6.2:
+    resolution: {integrity: sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -256,8 +261,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript/4.5.5:
-    resolution: {integrity: sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==}
+  /typescript/4.6.3:
+    resolution: {integrity: sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
@@ -295,6 +300,6 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /zod/3.11.6:
-    resolution: {integrity: sha512-daZ80A81I3/9lIydI44motWe6n59kRBfNzTuS2bfzVh1nAXi667TOTWWtatxyG+fwgNUiagSj/CWZwRRbevJIg==}
+  /zod/3.14.4:
+    resolution: {integrity: sha512-U9BFLb2GO34Sfo9IUYp0w3wJLlmcyGoMd75qU9yf+DrdGA4kEx6e+l9KOkAlyUO0PSQzZCa3TR4qVlcmwqSDuw==}
     dev: false
