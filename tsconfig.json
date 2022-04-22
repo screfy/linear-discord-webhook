@@ -1,19 +1,19 @@
 {
-  "compilerOptions": {
-    "moduleResolution": "Node",
-    "target": "ES2021",
-    "module": "CommonJS",
-    "lib": ["ES2021"],
-    "noImplicitAny": true,
-    "alwaysStrict": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "incremental": true,
-    "allowJs": false,
-    "noEmit": true
-  },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"moduleResolution": "Node",
+		"target": "ES2021",
+		"module": "CommonJS",
+		"lib": ["ES2021"],
+		"noImplicitAny": true,
+		"alwaysStrict": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"esModuleInterop": true,
+		"incremental": true,
+		"allowJs": false,
+		"noEmit": true
+	},
+	"include": ["**/*.ts"],
+	"exclude": ["node_modules"]
 }
