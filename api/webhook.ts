@@ -1,7 +1,6 @@
 import { LinearClient } from '@linear/sdk';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { MessageEmbed } from 'discord.js';
-import fetch from 'node-fetch';
 import { z, ZodError, ZodIssue } from 'zod';
 import { HttpError } from '../lib/HttpError';
 import { SCHEMA } from '../lib/schema';
@@ -76,19 +75,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 					embed
 						.setTitle(`${identifier} ${body.data.title}`)
 						.setURL(body.url)
-						.setAuthor('New issue added')
-						.setFooter(creator.name, creator.avatarUrl)
-						.addField('Team', `[${body.data.team.name}](${teamUrl})`, true)
-						.addField('Status', body.data.state.name, true);
+						.setAuthor({ name: 'New issue added' })
+						.setFooter({ text: creator.name, iconURL: creator.avatarUrl })
+						.addFields(
+							{
+								name: 'Team',
+								value: `[${body.data.team.name}](${teamUrl})`,
+								inline: true
+							},
+							{ name: 'Status', value: body.data.state.name, inline: true }
+						);
 
 					if (body.data.assignee) {
 						const assignee = await linear.user(body.data.assignee.id);
 
-						embed.addField(
-							'Assignee',
-							`[${assignee.displayName}](${assignee.url})`,
-							true
-						);
+						embed.addFields({
+							name: 'Assignee',
+							value: `[${assignee.displayName}](${assignee.url})`,
+							inline: true
+						});
 					}
 
 					if (body.data.description) {
@@ -101,9 +106,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 					embed
 						.setTitle(`${identifier} ${body.data.title}`)
 						.setURL(body.url)
-						.setAuthor('Status changed')
-						.setColor(body.data.state.color)
-						.setFooter(creator.name, creator.avatarUrl)
+						.setAuthor({ name: 'Status changed' })
+						.setColor(body.data.state.color as any)
+						.setFooter({ text: creator.name, iconURL: creator.avatarUrl })
 						.setDescription(`Status: **${body.data.state.name}**`);
 				}
 
@@ -117,8 +122,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 					embed
 						.setTitle(`${identifier} ${body.data.issue.title}`)
 						.setURL(body.url)
-						.setAuthor('New comment')
-						.setFooter(user.name, user.avatarUrl)
+						.setAuthor({ name: 'New comment' })
+						.setFooter({ text: user.name, iconURL: user.avatarUrl })
 						.setDescription(body.data.body);
 				}
 
