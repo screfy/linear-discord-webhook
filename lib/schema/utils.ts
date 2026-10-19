@@ -8,7 +8,19 @@ export enum Action {
 
 export enum Model {
 	ISSUE = 'Issue',
-	COMMENT = 'Comment'
+	COMMENT = 'Comment',
+	ISSUE_LABEL = 'IssueLabel',
+	REACTION = 'Reaction',
+	PROJECT = 'Project',
+	PROJECT_UPDATE = 'ProjectUpdate',
+	CYCLE = 'Cycle',
+	DOCUMENT = 'Document',
+	INITIATIVE = 'Initiative',
+	INITIATIVE_UPDATE = 'InitiativeUpdate',
+	CUSTOMER = 'Customer',
+	CUSTOMER_REQUEST = 'CustomerRequest',
+	ATTACHMENT = 'Attachment',
+	USER = 'User'
 }
 
 export const DATE_RESOLVABLE = z

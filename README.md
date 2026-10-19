@@ -4,9 +4,15 @@
 
 Receive Linear updates directly in your Discord channels.
 
-This application is powered by [Vercel][vercel] serverless functions utilizing Linear's webhooks to get notified when somebody creates a new issue, comment on the issue, or change the status of the issue.
+This application is powered by [Vercel][vercel] serverless functions utilizing Linear's webhooks to mirror Linear activity in Discord. It supports issues, comments, projects, project updates (the Linear pulse), cycles, reactions, documents, initiatives, customers, attachments and labels.
 
 It's inspired by the official [Slack integration][slack] for Linear.
+
+When configuring the Linear webhook, enable the resources you want to mirror:
+`Issue`, `Comment`, `IssueLabel`, `Reaction`, `Project`, `ProjectUpdate`,
+`Cycle`, `Document`, `Initiative`, `InitiativeUpdate`, `Customer`,
+`CustomerRequest` and `Attachment`. The endpoint also accepts Linear inbox
+notification events such as mentions, reactions, assignments and status changes.
 
 ## Installation
 
